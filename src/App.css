@@ -1,0 +1,26 @@
+
+
+.appContainer{
+
+     display: flex;
+}
+
+.mainContainer{
+   
+width: 100%;
+     
+}
+
+.sidebar{
+     min-height: 600px;
+}
+
+.footer{
+     width: 100%;
+  
+     
+}
+
+.footerContainer{
+     height: 50px;
+}
