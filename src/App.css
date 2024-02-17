@@ -1,26 +1,44 @@
-
-
-.appContainer{
+.appContainer {
 
      display: flex;
 }
 
-.mainContainer{
-   
-width: 100%;
-     
+.mainContainer {
+
+     width: 100%;
+
 }
 
-.sidebar{
+.sidebar {
      min-height: 600px;
 }
 
-.footer{
+.footer {
      width: 100%;
-  
-     
+
+
 }
 
-.footerContainer{
+.footerContainer {
      height: 50px;
+}
+
+.post-container {
+     margin: 15px 5px;
+}
+
+.hashtag {
+
+     margin: 0px 3px;
+}
+
+.reactions {
+     margin: 3px 10px;
+}
+
+.create-post {
+     width      : 69%;
+     margin-left: 10%;
+     margin-top : 55px;
+
 }

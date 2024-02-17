@@ -31,26 +31,34 @@ const DEFAULT_POST_LIST = [
   {
     id: 2,
     title: "Pass first division in B.tech",
-    body: "Hi,I am very happy in B.tech believable ",
+    body: "Hi,I am very happy that i have passed in B.tech unbelievable ",
     reaction: 10,
     userId: "user-2",
     tags: ["B.tech", "Graduate", "Tough", "Pass", "CPI"],
   },
-  //{
-//     id: 3,
-//     title: "Reading books",
-//     body: "Assalam Walaikum , I am reciting Quran majeed on daily basis Alhamdulillah!!!",
-//     reaction: 100,
-//     userId: "user-3",
-//     tags: ["Quran", "Islam", "Masha Allah"],
-//   },
+  {
+    id: 3,
+    title: "Reading books",
+    body: "Assalam Walaikum , I am reciting Quran majeed on daily basis Alhamdulillah!!!",
+    reaction: 100,
+    userId: "user-3",
+    tags: ["Quran", "Islam", "Masha Allah"],
+  },
 ];
 
 
 // this is second argumnet of useReducer which is a method 
 
 const postListReducer = (currPostList, action) => {
-  return currPostList;
+      
+      let newPostList=currPostList;
+
+      if(action.type==='DELETE_POST'){
+           
+        newPostList=currPostList.filter(post=>post.id!==action.payload.Postid);
+      }
+
+      return newPostList;
 };
 
 
@@ -59,11 +67,27 @@ const postListReducer = (currPostList, action) => {
 const PostListProvider = ({ children }) => {
 
 
-  const [currpostList, dispatch] = useReducer(postListReducer, DEFAULT_POST_LIST);
+  const [currpostList, dispatchPostList] = useReducer(postListReducer, DEFAULT_POST_LIST);
 
-  const addPost = () => {};
+  const addPost = (userId,PostTitle,Postbody,postReactions,PostTags) => {
+    
 
-  const deletePost = () => {};
+    console.log(`${userId}  ${PostTitle}  ${Postbody}  ${postReactions}  ${PostTags}  `);
+    
+
+  };
+
+  const deletePost = (Postid) => {
+    
+    // console.log(`deleted post with id: ${Postid}`);
+    dispatchPostList({
+      type:'DELETE_POST',
+      payload:{
+        Postid
+      }
+    })
+
+  };
 
   return (
     <PostList.Provider

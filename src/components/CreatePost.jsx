@@ -1,38 +1,105 @@
+import { createContext, useRef } from "react";
+import { PostList  } from "../store/post-list-store";
+
 const CreatePost = () => {
+
+   const {addPost}=createContext(PostList);
+
+  const userIdElement = useRef();
+  const PostTitleElement = useRef();
+  const PostbodyElement = useRef();
+  const PostReactionsElement = useRef();
+  const PostTagsElement = useRef();
+
+  const SubmitHandler=(event)=>{
+
+          event.preventDefault();
+         
+           const userId=userIdElement.current.value;
+           const PostTitle=PostTitleElement.current.value;
+           const Postbody=PostReactionsElement.current.value;
+           const postReactions=PostReactionsElement.current.value;
+           const PostTags=PostTagsElement.current.value.split(/(\s+)/);
+
+
+           addPost(userId,PostTitle,Postbody,postReactions,PostTags);
+
+  }
+
   return (
-    <form>
+    <form className="create-post" onSubmit={SubmitHandler}>
       <div className="mb-3">
-        <label htmlFor="exampleInputEmail1" className="form-label">
-          Email address
+        <label htmlFor="userId" className="form-label">
+          User Id
         </label>
         <input
-          type="email"
+          ref={userIdElement}
+          type="text"
+          placeholder="Enter your Id "
           className="form-control"
-          id="exampleInputEmail1"
+          id="userId"
           aria-describedby="emailHelp"
         />
-        <div id="emailHelp" className="form-text">
-          We'll never share your email with anyone else.
-        </div>
       </div>
+
       <div className="mb-3">
-        <label htmlFor="exampleInputPassword1" className="form-label">
-          Password
+        <label htmlFor="title" className="form-label">
+          Post Title
         </label>
         <input
-          type="password"
+          ref={PostTitleElement}
+          placeholder="Enter your title here "
+          type="text"
           className="form-control"
-          id="exampleInputPassword1"
+          id="title"
+          aria-describedby="emailHelp"
         />
       </div>
-      <div className="mb-3 form-check">
-        <input type="checkbox" className="form-check-input" id="exampleCheck1" />
-        <label className="form-check-label" htmlFor="exampleCheck1">
-          Check me out
+      <div className="mb-3">
+        <label htmlFor="body" className="form-label">
+          Your's Post Content
         </label>
+        <textarea
+          ref={PostbodyElement}
+          placeholder="Enter your's post content here"
+          rows={2}
+          type="text"
+          className="form-control"
+          id="body"
+          aria-describedby="emailHelp"
+        />
       </div>
+
+      <div className="mb-3">
+        <label htmlFor="reaction" className="form-label">
+          Reactors
+        </label>
+        <input
+          ref={PostReactionsElement}
+          placeholder="Enter expacted reactors to this post"
+          type="text"
+          className="form-control"
+          id="reaction"
+          aria-describedby="emailHelp"
+        />
+      </div>
+
+      <div className="mb-3">
+        <label htmlFor="tags" className="form-label">
+          Hashtags
+        </label>
+        <input
+          ref={PostTagsElement}
+          placeholder="Enter your tags here"
+          type="text"
+          className="form-control"
+          id="tags"
+          aria-describedby="emailHelp"
+        />
+      </div>
+
       <button type="submit" className="btn btn-primary">
-        Submit
+        Post
       </button>
     </form>
   );
