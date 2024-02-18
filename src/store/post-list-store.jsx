@@ -1,11 +1,8 @@
 import { createContext, useReducer } from "react";
 
-
-
 /* here is context api export with the name of PostList having three object one is list which tells number of list present at this time and it will be used by PostList component second is
 method which is add post which is used by component CreatePost.jsx and third is deletePost it is use by PostList forwarded by Post to delete created post
 */
-
 
 const DEFAULT_CONTEXT = {
   postList: [],
@@ -15,9 +12,25 @@ const DEFAULT_CONTEXT = {
 
 export const PostList = createContext(DEFAULT_CONTEXT);
 
+// this is second argumnet of useReducer which is a method
 
-/*  default post list store default value of lists one of argumanet of useReducer is default list here i am storing...... */ 
+const postListReducer = (currPostList, action) => {
+  let newPostList = currPostList;
 
+  if (action.type === "DELETE_POST") {
+    newPostList = currPostList.filter(
+      (post) => post.id !== action.payload.Postid
+    );
+    }
+    else if(action.type==='ADD_POST'){
+             
+      newPostList=[action.payload,...currPostList];
+    }
+
+  return newPostList;
+};
+
+/*  default post list store default value of lists one of argumanet of useReducer is default list here i am storing...... */
 
 const DEFAULT_POST_LIST = [
   {
@@ -46,47 +59,34 @@ const DEFAULT_POST_LIST = [
   },
 ];
 
-
-// this is second argumnet of useReducer which is a method 
-
-const postListReducer = (currPostList, action) => {
-      
-      let newPostList=currPostList;
-
-      if(action.type==='DELETE_POST'){
-           
-        newPostList=currPostList.filter(post=>post.id!==action.payload.Postid);
-      }
-
-      return newPostList;
-};
-
-
-
-
 const PostListProvider = ({ children }) => {
+  const [currpostList, dispatchPostList] = useReducer(
+    postListReducer,
+    DEFAULT_POST_LIST
+  );
 
-
-  const [currpostList, dispatchPostList] = useReducer(postListReducer, DEFAULT_POST_LIST);
-
-  const addPost = (userId,PostTitle,Postbody,postReactions,PostTags) => {
-    
-
-    console.log(`${userId}  ${PostTitle}  ${Postbody}  ${postReactions}  ${PostTags}  `);
-    
-
+  const addPost = (userId, PostTitle, Postbody, postReactions, PostTags) => {
+    dispatchPostList({
+      type: "ADD_POST",
+      payload: {
+        id: Date.now(),
+        title: PostTitle,
+        body: Postbody,
+        reaction: postReactions,
+        userId: userId,
+        tags: PostTags,
+      },
+    });
   };
 
   const deletePost = (Postid) => {
-    
     // console.log(`deleted post with id: ${Postid}`);
     dispatchPostList({
-      type:'DELETE_POST',
-      payload:{
-        Postid
-      }
-    })
-
+      type: "DELETE_POST",
+      payload: {
+        Postid,
+      },
+    });
   };
 
   return (

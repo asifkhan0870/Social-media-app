@@ -1,9 +1,9 @@
-import { createContext, useRef } from "react";
-import { PostList  } from "../store/post-list-store";
+import {  useContext, useRef } from "react";
+import { PostList as PostListData } from "../store/post-list-store";
 
 const CreatePost = () => {
 
-   const {addPost}=createContext(PostList);
+  const { addPost } = useContext(PostListData);
 
   const userIdElement = useRef();
   const PostTitleElement = useRef();
@@ -19,10 +19,15 @@ const CreatePost = () => {
            const PostTitle=PostTitleElement.current.value;
            const Postbody=PostReactionsElement.current.value;
            const postReactions=PostReactionsElement.current.value;
-           const PostTags=PostTagsElement.current.value.split(/(\s+)/);
+           const PostTags=PostTagsElement.current.value.split(' ');
+           userIdElement.current.value="";
+           PostTitleElement.current.value="";
+           PostReactionsElement.current.value="";
+           PostReactionsElement.current.value="";
+           PostTagsElement.current.value="";
 
 
-           addPost(userId,PostTitle,Postbody,postReactions,PostTags);
+      addPost(userId,PostTitle,Postbody,postReactions,PostTags);
 
   }
 
