@@ -7,6 +7,7 @@ method which is add post which is used by component CreatePost.jsx and third is 
 const DEFAULT_CONTEXT = {
   postList: [],
   addPost: () => {},
+  addInitialPost:()=>{},
   deletePost: () => {},
 };
 
@@ -26,43 +27,48 @@ const postListReducer = (currPostList, action) => {
              
       newPostList=[action.payload,...currPostList];
     }
+    else if (action.type==='ADD_INITIAL_POST'){
+      newPostList=action.payload.posts;
+
+    }
 
   return newPostList;
 };
 
 /*  default post list store default value of lists one of argumanet of useReducer is default list here i am storing...... */
 
-const DEFAULT_POST_LIST = [
-  {
-    id: 1,
-    title: "Going to Mumbai",
-    body: "Hi, there I am going to Mumbai",
-    reaction: 2,
-    userId: "user-1",
-    tags: ["vacation", "Mumbai", "chaupati"],
-  },
-  {
-    id: 2,
-    title: "Pass first division in B.tech",
-    body: "Hi,I am very happy that i have passed in B.tech unbelievable ",
-    reaction: 10,
-    userId: "user-2",
-    tags: ["B.tech", "Graduate", "Tough", "Pass", "CPI"],
-  },
-  {
-    id: 3,
-    title: "Reading books",
-    body: "Assalam Walaikum , I am reciting Quran majeed on daily basis Alhamdulillah!!!",
-    reaction: 100,
-    userId: "user-3",
-    tags: ["Quran", "Islam", "Masha Allah"],
-  },
-];
+// const DEFAULT_POST_LIST = [
+//   {
+//     id: 1,
+//     title: "Going to Mumbai",
+//     body: "Hi, there I am going to Mumbai",
+//     reaction: 2,
+//     userId: "user-1",
+//     tags: ["vacation", "Mumbai", "chaupati"],
+//   },
+//   {
+//     id: 2,
+//     title: "Pass first division in B.tech",
+//     body: "Hi,I am very happy that i have passed in B.tech unbelievable ",
+//     reaction: 10,
+//     userId: "user-2",
+//     tags: ["B.tech", "Graduate", "Tough", "Pass", "CPI"],
+//   },
+//   {
+//     id: 3,
+//     title: "Reading books",
+//     body: "Assalam Walaikum , I am reciting Quran majeed on daily basis Alhamdulillah!!!",
+//     reaction: 100,
+//     userId: "user-3",
+//     tags: ["Quran", "Islam", "Masha Allah"],
+//   },
+// ];
 
 const PostListProvider = ({ children }) => {
   const [currpostList, dispatchPostList] = useReducer(
     postListReducer,
-    DEFAULT_POST_LIST
+    // DEFAULT_POST_LIST
+    []
   );
 
   const addPost = (userId, PostTitle, Postbody, postReactions, PostTags) => {
@@ -75,6 +81,16 @@ const PostListProvider = ({ children }) => {
         reaction: postReactions,
         userId: userId,
         tags: PostTags,
+      },
+    });
+  };
+
+
+  const addInitialPost = (posts) => {
+    dispatchPostList({
+      type: "ADD_INITIAL_POST",
+      payload: {
+      posts,
       },
     });
   };
@@ -95,6 +111,7 @@ const PostListProvider = ({ children }) => {
         currpostList: currpostList,
         addPost: addPost,
         deletePost: deletePost,
+        addInitialPost:addInitialPost,
       }}
     >
       {children}
