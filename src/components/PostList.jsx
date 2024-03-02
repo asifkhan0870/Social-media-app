@@ -1,35 +1,42 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { PostList as PostListData } from "../store/post-list-store";
 
 import Post from "./Post";
 import NoPost from "./NoPost";
+import LoadingSpinner from "./LoadingSpinner";
 
 const PostList = () => {
   const { currpostList, addInitialPost } = useContext(PostListData);
 
-  const [dataFetched, setdataFetched] = useState(false);
+  const [fetching, setFetching] = useState(false);
 
-  if (!dataFetched) {
+  useEffect(() => {
+
+    const controller=new AbortController();
+    const signal=controller.signal;
+    setFetching(true);
     fetch("https://dummyjson.com/posts")
       .then((res) => res.json())
-      .then((data) => addInitialPost(data.posts));
+      .then((data) => {
+        addInitialPost(data.posts);
+        setFetching(false);
+      });
 
-      setdataFetched(true);
-  }
+      return ()=>{
+        // console.log("Cleaning up useEffects......");
 
-  const handlegetPostOnClick = () => {
-   
-  };
+        controller.abort();
+
+      }
+  }, []);
 
   return (
     <>
-      {currpostList.length === 0 && (
-        <NoPost  />
-      )}
-      {currpostList.map((post) => (
-        <Post key={post.id} post={post}></Post>
-      ))}
+      {fetching && <LoadingSpinner />}
+      {!fetching && currpostList.length === 0 && <NoPost />}
+      {!fetching &&
+        currpostList.map((post) => <Post key={post.id} post={post}></Post>)}
     </>
   );
 };
